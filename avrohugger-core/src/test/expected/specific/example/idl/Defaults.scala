@@ -3,9 +3,7 @@ package example.idl
 
 import scala.annotation.switch
 
-sealed trait Defaults extends org.apache.avro.specific.SpecificRecordBase with Product with Serializable
-
-final case class Embedded(var inner: Int) extends org.apache.avro.specific.SpecificRecordBase with Defaults {
+final case class Embedded(var inner: Int) extends org.apache.avro.specific.SpecificRecordBase {
   def this() = this(0)
   def get(field$: Int): AnyRef = {
     (field$: @switch) match {
@@ -24,14 +22,14 @@ final case class Embedded(var inner: Int) extends org.apache.avro.specific.Speci
     }
     ()
   }
-  def getSchema: org.apache.avro.Schema = Embedded.SCHEMA$
+  def getSchema: org.apache.avro.Schema = example.idl.Embedded.SCHEMA$
 }
 
-final object Embedded {
+object Embedded {
   val SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"Embedded\",\"namespace\":\"example.idl\",\"fields\":[{\"name\":\"inner\",\"type\":\"int\"}]}")
 }
 
-final case class DefaultTest(var suit: DefaultEnum = DefaultEnum.SPADES, var number: Int = 0, var str: String = "str", var optionString: Option[String] = None, var optionStringValue: Option[String] = Some("default"), var embedded: Embedded = new Embedded(1), var defaultArray: Seq[Int] = Seq(1, 3, 4, 5), var optionalEnum: Option[DefaultEnum] = None, var defaultMap: Map[String, String] = Map("Hello" -> "world", "Merry" -> "Christmas"), var byt: Array[Byte] = Array[Byte](-61, -65)) extends org.apache.avro.specific.SpecificRecordBase with Defaults {
+final case class DefaultTest(var suit: DefaultEnum = DefaultEnum.SPADES, var number: Int = 0, var str: String = "str", var optionString: Option[String] = None, var optionStringValue: Option[String] = Some("default"), var embedded: example.idl.Embedded = new Embedded(1), var defaultArray: Seq[Int] = Seq(1, 3, 4, 5), var optionalEnum: Option[DefaultEnum] = None, var defaultMap: Map[String, String] = Map("Hello" -> "world", "Merry" -> "Christmas"), var byt: Array[Byte] = Array[Byte](-61, -65)) extends org.apache.avro.specific.SpecificRecordBase {
   def this() = this(DefaultEnum.SPADES, 0, "str", None, Some("default"), new Embedded(1), Seq(1, 3, 4, 5), None, Map("Hello" -> "world", "Merry" -> "Christmas"), Array[Byte](-61, -65))
   def get(field$: Int): AnyRef = {
     (field$: @switch) match {
@@ -60,7 +58,7 @@ final case class DefaultTest(var suit: DefaultEnum = DefaultEnum.SPADES, var num
         embedded
       }.asInstanceOf[AnyRef]
       case 6 => {
-        scala.collection.JavaConverters.bufferAsJavaListConverter({
+        scala.jdk.CollectionConverters.BufferHasAsJava({
           defaultArray map { x =>
             x
           }
@@ -112,14 +110,15 @@ final case class DefaultTest(var suit: DefaultEnum = DefaultEnum.SPADES, var num
       }.asInstanceOf[Option[String]]
       case 5 => this.embedded = {
         value
-      }.asInstanceOf[Embedded]
+      }.asInstanceOf[example.idl.Embedded]
       case 6 => this.defaultArray = {
         value match {
-          case (array: java.util.List[_]) => {
-            scala.collection.JavaConverters.asScalaIteratorConverter(array.iterator).asScala.map({ x =>
+          case (array: java.util.List[?]) => {
+            scala.jdk.CollectionConverters.IteratorHasAsScala(array.iterator).asScala.map({ x =>
               x
             }).toSeq
           }
+          case _ => new org.apache.avro.AvroRuntimeException("expected array with type java.util.List[_]")
         }
       }.asInstanceOf[Seq[Int]]
       case 7 => this.optionalEnum = {
@@ -131,28 +130,33 @@ final case class DefaultTest(var suit: DefaultEnum = DefaultEnum.SPADES, var num
       case 8 => this.defaultMap = {
         value match {
           case (map: java.util.Map[_,_]) => {
-            scala.collection.JavaConverters.mapAsScalaMapConverter(map).asScala.toMap map { kvp =>
+            scala.jdk.CollectionConverters.MapHasAsScala(map).asScala.toMap map { kvp =>
               val key = kvp._1.toString
               val value = kvp._2
               (key, value.toString)
             }
           }
+          case _ => new org.apache.avro.AvroRuntimeException("expected array with type java.util.List[_]")
         }
       }.asInstanceOf[Map[String, String]]
       case 9 => this.byt = {
         value match {
           case (buffer: java.nio.ByteBuffer) => {
-            buffer.array()
+            val dup = buffer.duplicate()
+            val array = new Array[Byte](dup.remaining)
+            dup.get(array)
+            array
           }
+          case _ => new org.apache.avro.AvroRuntimeException("expected type java.nio.ByteBuffer")
         }
       }.asInstanceOf[Array[Byte]]
       case _ => new org.apache.avro.AvroRuntimeException("Bad index")
     }
     ()
   }
-  def getSchema: org.apache.avro.Schema = DefaultTest.SCHEMA$
+  def getSchema: org.apache.avro.Schema = example.idl.DefaultTest.SCHEMA$
 }
 
-final object DefaultTest {
+object DefaultTest {
   val SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"record\",\"name\":\"DefaultTest\",\"namespace\":\"example.idl\",\"fields\":[{\"name\":\"suit\",\"type\":{\"type\":\"enum\",\"name\":\"DefaultEnum\",\"symbols\":[\"SPADES\",\"DIAMONDS\",\"CLUBS\",\"HEARTS\"]},\"default\":\"SPADES\"},{\"name\":\"number\",\"type\":\"int\",\"default\":0},{\"name\":\"str\",\"type\":\"string\",\"default\":\"str\"},{\"name\":\"optionString\",\"type\":[\"null\",\"string\"],\"default\":null},{\"name\":\"optionStringValue\",\"type\":[\"string\",\"null\"],\"default\":\"default\"},{\"name\":\"embedded\",\"type\":{\"type\":\"record\",\"name\":\"Embedded\",\"fields\":[{\"name\":\"inner\",\"type\":\"int\"}]},\"default\":{\"inner\":1}},{\"name\":\"defaultArray\",\"type\":{\"type\":\"array\",\"items\":\"int\"},\"default\":[1,3,4,5]},{\"name\":\"optionalEnum\",\"type\":[\"null\",\"DefaultEnum\"],\"default\":null},{\"name\":\"defaultMap\",\"type\":{\"type\":\"map\",\"values\":\"string\"},\"default\":{\"Hello\":\"world\",\"Merry\":\"Christmas\"}},{\"name\":\"byt\",\"type\":\"bytes\",\"default\":\"ÿ\"}]}")
 }

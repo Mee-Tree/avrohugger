@@ -1,6 +1,7 @@
 package util
 
 import org.specs2.matcher.{ Expectable, ExpectationsCreation, Matcher }
+import avrohugger.internal.ScalaVersion
 
 object Util {
 
@@ -20,6 +21,14 @@ object Util {
     }
 
     readFile0(0)
+  }
+
+  def readVersionSpecific(fileName: String, maxTries: Int = 3) = {
+    val scalaVersion = ScalaVersion.version
+    val versionedFileName = fileName.replace("expected", s"expected-$scalaVersion")
+
+    if (checkFileExist(versionedFileName)) readFile(versionedFileName, maxTries)
+    else readFile(fileName, maxTries)
   }
 
   def checkFileExist(fileName: String): Boolean =

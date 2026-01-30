@@ -5,8 +5,8 @@ import other.ns.string.ExternalDependency
 
 sealed trait ImportProtocol extends Product with Serializable
 
-final case class DependentRecord(dependency: ExternalDependency, number: Int) extends ImportProtocol
+final case class DependentRecord(dependency: other.ns.string.ExternalDependency, number: Int) extends ImportProtocol
 
 final case class DependentRecord2(dependency: String, name: String) extends ImportProtocol
 
-final case class DependentRecord3(dependency: Embedded, value: Boolean) extends ImportProtocol
+final case class DependentRecord3(dependency: example.idl.string.Embedded, value: Boolean) extends ImportProtocol

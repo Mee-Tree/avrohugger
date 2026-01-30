@@ -2,4 +2,3 @@
 package other.ns.scala3enum
 
 final case class ExternalDependency(number: Int)
-

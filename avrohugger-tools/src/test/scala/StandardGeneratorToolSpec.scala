@@ -50,8 +50,8 @@ class StandardGeneratorToolSpec extends mutable.Specification {
       Directory.TEST_INPUT_DIR + "/pilot.avsc",
       Directory.TEST_OUTPUT_BASE_DIR
     ))
-    Util.readFile(Directory.TEST_OUTPUT_HANDLE) === Util.readFile(Directory.TEST_EXPECTED_HANDLE)
-    Util.readFile(Directory.TEST_OUTPUT_PILOT) === Util.readFile(Directory.TEST_EXPECTED_PILOT)
+    (Util.readFile(Directory.TEST_OUTPUT_HANDLE) === Util.readFile(Directory.TEST_EXPECTED_HANDLE)) and
+    (Util.readFile(Directory.TEST_OUTPUT_PILOT) === Util.readFile(Directory.TEST_EXPECTED_PILOT))
   }
 
   "match the expected file and directory" in {
@@ -60,8 +60,8 @@ class StandardGeneratorToolSpec extends mutable.Specification {
       Directory.TEST_INPUT_DIR,
       Directory.TEST_OUTPUT_BASE_DIR
     ))
-    Util.readFile(Directory.TEST_OUTPUT_MASCOT) === Util.readFile(Directory.TEST_EXPECTED_MASCOT)
-    Util.readFile(Directory.TEST_OUTPUT_WRESTLER) === Util.readFile(Directory.TEST_EXPECTED_WRESTLER)
+    (Util.readFile(Directory.TEST_OUTPUT_MASCOT) === Util.readFile(Directory.TEST_EXPECTED_MASCOT)) and
+    (Util.readFile(Directory.TEST_OUTPUT_WRESTLER) === Util.readFile(Directory.TEST_EXPECTED_WRESTLER))
   }
   /* currently -string makes no difference, all case classes use String
     "match the expected using the -string option" in {

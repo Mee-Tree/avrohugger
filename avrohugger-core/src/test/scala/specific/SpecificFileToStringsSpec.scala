@@ -55,8 +55,8 @@ class SpecificFileToStringsSpec extends Specification {
     val expectedTrait = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/proto/Mail.scala")
     val expectedRecord = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/proto/Message.scala")
 
-    sourceTrait === expectedTrait
-    sourceRecord === expectedRecord
+    (sourceTrait === expectedTrait) and
+    (sourceRecord === expectedRecord)
   }
   
   def e2 = {
@@ -84,9 +84,9 @@ class SpecificFileToStringsSpec extends Specification {
     val expected1 = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/Level1.scala")
     val expected2 = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/Level2.scala")
     
-    source0 === expected0
-    source1 === expected1
-    source2 === expected2
+    (source0 === expected0) and
+    (source1 === expected1) and
+    (source2 === expected2)
   }
   
   def e5 = {
@@ -120,8 +120,8 @@ class SpecificFileToStringsSpec extends Specification {
     val List(sourceRecord, sourceEnum) = gen.fileToStrings(infile)
     val expectedEnum = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/proto/Suit.java")
     val expectedRecord = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/proto/Card.scala")
-    sourceEnum === expectedEnum
-    sourceRecord === expectedRecord
+    (sourceEnum === expectedEnum) and
+    (sourceRecord === expectedRecord)
   }
   
   def e9 = {
@@ -130,8 +130,8 @@ class SpecificFileToStringsSpec extends Specification {
     val List(sourceRecord, sourceEnum) = gen.fileToStrings(infile)
     val expectedEnum = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/Suit.java")
     val expectedRecord = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/Card.scala")
-    sourceEnum === expectedEnum
-    sourceRecord === expectedRecord
+    (sourceEnum === expectedEnum) and
+    (sourceRecord === expectedRecord)
   }
   
   def e10 = {
@@ -140,8 +140,8 @@ class SpecificFileToStringsSpec extends Specification {
     val List(sourceEnum, sourceRecord) = gen.fileToStrings(infile)
     val expectedEnum = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/Direction.java")
     val expectedRecord = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/Compass.scala")
-    sourceEnum === expectedEnum
-    sourceRecord === expectedRecord
+    (sourceEnum === expectedEnum) and
+    (sourceRecord === expectedRecord)
   }
   
   def e11 = {
@@ -174,16 +174,16 @@ class SpecificFileToStringsSpec extends Specification {
     val List(dep3, dep2, dep1, enm, adt) = gen.fileToStrings(infile)
     
     val expectedADT = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/ImportProtocol.scala")
-    val expectedDep1 = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/Defaults.scala")
+    val expectedDep1 = util.Util.readVersionSpecific("avrohugger-core/src/test/expected/specific/example/idl/Defaults.scala")
     val expectedEnum = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/DefaultEnum.java")
     val expectedDep2 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/ExternalDependency.scala")
     val expectedDep3 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/Suit.java")
     
-    adt === expectedADT
-    dep1 === expectedDep1
-    enm === expectedEnum
-    dep2 === expectedDep2
-    dep3 === expectedDep3
+    (adt === expectedADT) and
+    (dep1 === expectedDep1) and
+    (enm === expectedEnum) and
+    (dep2 === expectedDep2) and
+    (dep3 === expectedDep3)
   }
   
   def e15 = {
@@ -200,11 +200,11 @@ class SpecificFileToStringsSpec extends Specification {
     val gen = Generator(SpecificRecord)
     val List(sourceRecord, sourceEnum) = gen.fileToStrings(infile)
 
-    val expectedRecord = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/Defaults.scala")
+    val expectedRecord = util.Util.readVersionSpecific("avrohugger-core/src/test/expected/specific/example/idl/Defaults.scala")
     val expectedEnum = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/DefaultEnum.java")
   
-    sourceRecord === expectedRecord
-    sourceEnum === expectedEnum
+    (sourceRecord === expectedRecord) and
+    (sourceEnum === expectedEnum)
   }
   
   

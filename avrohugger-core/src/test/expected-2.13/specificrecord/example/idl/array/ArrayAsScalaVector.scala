@@ -3,12 +3,12 @@ package example.idl.array
 
 import scala.annotation.switch
 
-final case class ArrayIdl(var data: List[Int]) extends org.apache.avro.specific.SpecificRecordBase {
-  def this() = this(List.empty)
+final case class ArrayIdl(var data: Vector[Int]) extends org.apache.avro.specific.SpecificRecordBase {
+  def this() = this(Vector.empty)
   def get(field$: Int): AnyRef = {
     (field$: @switch) match {
       case 0 => {
-        scala.collection.JavaConverters.bufferAsJavaListConverter({
+        scala.jdk.CollectionConverters.BufferHasAsJava({
           data map { x =>
             x
           }
@@ -22,13 +22,13 @@ final case class ArrayIdl(var data: List[Int]) extends org.apache.avro.specific.
       case 0 => this.data = {
         value match {
           case (array: java.util.List[_]) => {
-            scala.collection.JavaConverters.asScalaIteratorConverter(array.iterator).asScala.map({ x =>
+            scala.jdk.CollectionConverters.IteratorHasAsScala(array.iterator).asScala.map({ x =>
               x
-            }).toList
+            }).toVector
           }
           case _ => new org.apache.avro.AvroRuntimeException("expected array with type java.util.List[_]")
         }
-      }.asInstanceOf[List[Int]]
+      }.asInstanceOf[Vector[Int]]
       case _ => new org.apache.avro.AvroRuntimeException("Bad index")
     }
     ()

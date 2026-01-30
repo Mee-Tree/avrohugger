@@ -3,7 +3,7 @@ package example
 
 import scala.annotation.switch
 
-final case class Level1(var level2: Level2) extends org.apache.avro.specific.SpecificRecordBase {
+final case class Level1(var level2: example.Level2) extends org.apache.avro.specific.SpecificRecordBase {
   def this() = this(new Level2)
   def get(field$: Int): AnyRef = {
     (field$: @switch) match {
@@ -17,12 +17,12 @@ final case class Level1(var level2: Level2) extends org.apache.avro.specific.Spe
     (field$: @switch) match {
       case 0 => this.level2 = {
         value
-      }.asInstanceOf[Level2]
+      }.asInstanceOf[example.Level2]
       case _ => new org.apache.avro.AvroRuntimeException("Bad index")
     }
     ()
   }
-  def getSchema: org.apache.avro.Schema = Level1.SCHEMA$
+  def getSchema: org.apache.avro.Schema = example.Level1.SCHEMA$
 }
 
 object Level1 {

@@ -27,15 +27,15 @@ class SpecificCustomEnumSpec extends Specification {
   
     val expectedADT = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/java/ImportProtocol.scala")
     val expectedDep1a = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/java/DefaultEnum.java")
-    val expectedDep1 = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/java/Defaults.scala")
+    val expectedDep1 = util.Util.readVersionSpecific("avrohugger-core/src/test/expected/specific/example/idl/java/Defaults.scala")
     val expectedDep2 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/java/ExternalDependency.scala")
     val expectedDep3 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/java/Suit.java")
   
-    adt === expectedADT
-    dep1a === expectedDep1a
-    dep1 === expectedDep1
-    dep2 === expectedDep2
-    dep3 === expectedDep3
+    (adt === expectedADT) and
+    (dep1a === expectedDep1a) and
+    (dep1 === expectedDep1) and
+    (dep2 === expectedDep2) and
+    (dep3 === expectedDep3)
     
   }
   
@@ -58,15 +58,15 @@ class SpecificCustomEnumSpec extends Specification {
       
     val expectedADT = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/java/ImportProtocol.scala")
     val expectedDep1a = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/java/DefaultEnum.java")
-    val expectedDep1 = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/java/Defaults.scala")
+    val expectedDep1 = util.Util.readVersionSpecific("avrohugger-core/src/test/expected/specific/example/idl/java/Defaults.scala")
     val expectedDep2 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/java/ExternalDependency.scala")
     val expectedDep3 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/java/Suit.java")
   
-    adt === expectedADT
-    dep1a === expectedDep1a
-    dep1 === expectedDep1
-    dep2 === expectedDep2
-    dep3 === expectedDep3
+    (adt === expectedADT) and
+    (dep1a === expectedDep1a) and
+    (dep1 === expectedDep1) and
+    (dep2 === expectedDep2) and
+    (dep3 === expectedDep3)
   }
   
   
@@ -82,12 +82,12 @@ class SpecificCustomEnumSpec extends Specification {
     val List(dep2, dep1, adt) = gen.fileToStrings(infile)
   
     val expectedADT = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/string/ImportProtocol.scala")
-    val expectedDep1 = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/string/Defaults.scala")
+    val expectedDep1 = util.Util.readVersionSpecific("avrohugger-core/src/test/expected/specific/example/idl/string/Defaults.scala")
     val expectedDep2 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/string/ExternalDependency.scala")
     
-    adt === expectedADT
-    dep1 === expectedDep1
-    dep2 === expectedDep2
+    (adt === expectedADT) and
+    (dep1 === expectedDep1) and
+    (dep2 === expectedDep2)
     
   }
   
@@ -107,12 +107,12 @@ class SpecificCustomEnumSpec extends Specification {
     val dep2 = util.Util.readFile("target/generated-sources/specific/other/ns/string/ExternalDependency.scala")
       
     val expectedADT = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/string/ImportProtocol.scala")
-    val expectedDep1 = util.Util.readFile("avrohugger-core/src/test/expected/specific/example/idl/string/Defaults.scala")
+    val expectedDep1 = util.Util.readVersionSpecific("avrohugger-core/src/test/expected/specific/example/idl/string/Defaults.scala")
     val expectedDep2 = util.Util.readFile("avrohugger-core/src/test/expected/specific/other/ns/string/ExternalDependency.scala")
   
-    adt === expectedADT
-    dep1 === expectedDep1
-    dep2 === expectedDep2
+    (adt === expectedADT) and
+    (dep1 === expectedDep1) and
+    (dep2 === expectedDep2)
   }
 
 }

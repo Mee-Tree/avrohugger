@@ -29,10 +29,11 @@ trait SeqSpec {
     correctly generate strings with Vector when asked for ${strings(types = defaultTypes.copy(array = ScalaVector))}
     correctly generate files with Vector when asked for ${files(types = defaultTypes.copy(array = ScalaVector))}"""
 
-  def expectedOutput(formatType: String, arrayType: String): String
+  def expectedOutput(formatType: String, arrayType: String): String =
+    util.Util.readVersionSpecific(s"avrohugger-core/src/test/expected/$formatType/example/idl/array/ArrayAs$arrayType.scala")
 
-
-  def actualOutput = "example/idl/array/ArrayIdl.scala"
+  def actualOutput(formatType: String, arrayType: String): String =
+    util.Util.readFile(s"target/generated-sources/$formatType/$arrayType/example/idl/array/ArrayIdl.scala")
 
 
   final def strings(types: AvroScalaTypes = defaultTypes, input: java.io.File = protocolFile): Result = {
@@ -42,24 +43,23 @@ trait SeqSpec {
 
     val List(dep1) = gen.fileToStrings(input)
 
-    val expectedDep1 = util.Util.readFile(expectedOutput(formatType, outputArrayType)).dropRight(1)
+    val expectedDep1 = expectedOutput(formatType, outputArrayType)
 
     dep1 === expectedDep1
 
   }
 
   final def files(types: AvroScalaTypes = defaultTypes,
-                  input: java.io.File = protocolFile,
-                  actualOutput: String = actualOutput): Result = {
+                  input: java.io.File = protocolFile): Result = {
     val gen = generator.copy(avroScalaCustomTypes = Some(types))
     val outputArrayType = types.array.toString
 
     val outDir = s"${gen.defaultOutputDir}/$formatType/$outputArrayType/"
     gen.fileToFile(input, outDir)
 
-    val dep1 = util.Util.readFile(s"target/generated-sources/$formatType/$outputArrayType/$actualOutput")
+    val dep1 = actualOutput(formatType, outputArrayType)
 
-    val expectedDep1 = util.Util.readFile(expectedOutput(formatType, outputArrayType)).dropRight(1)
+    val expectedDep1 = expectedOutput(formatType, outputArrayType)
 
     dep1 === expectedDep1
   }
