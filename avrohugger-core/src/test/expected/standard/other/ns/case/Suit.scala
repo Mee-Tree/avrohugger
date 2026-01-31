@@ -1,5 +1,5 @@
 /** MACHINE-GENERATED FROM AVRO SCHEMA. DO NOT EDIT DIRECTLY */
-package other.ns.case
+package other.ns.`case`
 
 sealed trait Suit
 

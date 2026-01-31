@@ -1,6 +1,7 @@
 package avrohugger
 package matchers
 
+import avrohugger.format.FieldRenamer
 import avrohugger.matchers.custom.{ CustomNamespaceMatcher, CustomTypeMatcher }
 import avrohugger.stores.ClassStore
 import avrohugger.types._
@@ -79,7 +80,7 @@ class TypeMatcher(
               Option(schema.getNamespace()),
               this,
               maybeDefaultNamespace = Option(schema.getNamespace())
-            )
+            ).map(FieldRenamer.escapePackageName)
             maybeNamespace match {
               case Some(ns) => s"${ns}.${schema.getName()}"
               case None => schema.getName()

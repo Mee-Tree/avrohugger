@@ -153,7 +153,7 @@ trait SourceFormat {
       getFilePath(namespace, schemaOrProtocol, maybeOutDir, typeMatcher)
     val scalaString = scalaTreehugger.asScalaCodeString(
       classStore,
-      namespace,
+      namespace.map(FieldRenamer.escapePackageName),
       schemaOrProtocol,
       typeMatcher,
       restrictedFields,

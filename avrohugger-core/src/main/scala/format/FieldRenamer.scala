@@ -12,4 +12,7 @@ object FieldRenamer {
   private def isMangled(fieldName: String): Boolean = RESERVED_WORDS.contains(fieldName) || fieldName.endsWith("_")
 
   def rename(fieldName: String): String = if (isMangled(fieldName)) backtick(fieldName) else fieldName
+
+  def escapePackageName(namespace: String): String =
+    namespace.split('.').map(rename).mkString(".")
 }

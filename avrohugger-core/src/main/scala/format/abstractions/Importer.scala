@@ -94,14 +94,16 @@ trait Importer {
     CustomNamespaceMatcher.checkCustomNamespace(
       maybeReferredNamespace,
       typeMatcher,
-      maybeDefaultNamespace = maybeReferredNamespace)
+      maybeDefaultNamespace = maybeReferredNamespace
+    ).map(FieldRenamer.escapePackageName)
   }
 
   private def asImportDef(packageName: String, fields: List[Schema], typeMatcher: TypeMatcher): Import = {
     val maybeUpdatedPackageName = CustomNamespaceMatcher.checkCustomNamespace(
       Some(packageName),
       typeMatcher,
-      maybeDefaultNamespace = Some(packageName))
+      maybeDefaultNamespace = Some(packageName)
+    ).map(FieldRenamer.escapePackageName)
     val updatedPkg = maybeUpdatedPackageName.getOrElse(packageName)
     val importedPackageSym = RootClass.newClass(updatedPkg)
     val importedTypes =

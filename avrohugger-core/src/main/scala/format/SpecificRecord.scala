@@ -41,7 +41,7 @@ object SpecificRecord extends SourceFormat {
       typeMatcher)
     val rpcTraitString = scalaTreehugger.asScalaCodeString(
       classStore,
-      namespace,
+      namespace.map(FieldRenamer.escapePackageName),
       Right(protocol),
       typeMatcher,
       restrictedFields,
