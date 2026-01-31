@@ -3,8 +3,7 @@ package example.idl.scala3enum
 
 sealed trait Defaults
 
-Scala3EnumSourceCode(enum DefaultEnum { case SPADES, DIAMONDS, CLUBS, HEARTS }
-)
+enum DefaultEnum extends Defaults { case SPADES, DIAMONDS, CLUBS, HEARTS }
 
 final case class Embedded(inner: Int) extends Defaults
 

@@ -8,7 +8,7 @@ import avrohugger.format.standard.trees.Scala3EnumSourceCode
 import avrohugger.matchers.TypeMatcher
 import avrohugger.stores.ClassStore
 import org.apache.avro.{ Protocol, Schema }
-import treehugger.forest._
+import treehugger.forest.{ Tree, TreePrinter, treehuggerDSL, show, stringToTermName }
 import treehuggerDSL._
 
 object StandardScalaTreehugger extends ScalaTreehugger {
@@ -18,6 +18,17 @@ object StandardScalaTreehugger extends ScalaTreehugger {
   val importer = StandardImporter
 
   private val header = "MACHINE-GENERATED FROM AVRO SCHEMA. DO NOT EDIT DIRECTLY"
+
+  private def showWithScala3Enum(tree: Tree): String =
+    show(
+      tree,
+      out => new TreePrinter(out) {
+        override def printTree(tree: Tree): Unit = tree match {
+          case Scala3EnumSourceCode(code) => super.print(code)
+          case tree => super.printTree(tree)
+        }
+      }
+    )
 
   def asScalaCodeString(
     classStore: ClassStore,
@@ -36,22 +47,16 @@ object StandardScalaTreehugger extends ScalaTreehugger {
     }
 
     // wrap the imports and class definition in a block with comment and package
-    topLevelDefs match {
-      // if the only topLevelDef is a scala 3 enum, emit it as raw string
-      case List(Scala3EnumSourceCode(content)) =>
-        val pkg = namespace.map(ns => s"package $ns\n\n").getOrElse("")
-        val importStrings = if (imports.nonEmpty) imports.mkString("\n") else ""
-        s"/* $header */\n" + pkg + importStrings + content + "\n"
-      case _ =>
-        val tree = {
-          val blockContent = imports ++ topLevelDefs
-          if (namespace.isDefined) BLOCK(blockContent).inPackage(namespace.get)
-          else BLOCK(blockContent: _*).withoutPackage
-        }.withDoc(header)
-        // SpecificCompiler can't return a tree for Java enums, so return
-        // a string here for a consistent api vis a vis *ToFile and *ToStrings
-        treeToString(tree)
-    }
+    val tree = {
+      val blockContent = imports ++ topLevelDefs
+      namespace match {
+        case Some(ns) => BLOCK(blockContent).inPackage(ns)
+        case None => BLOCK(blockContent: _*).withoutPackage
+      }
+    }.withDoc(header)
+    // SpecificCompiler can't return a tree for Java enums, so return
+    // a string here for a consistent api vis a vis *ToFile and *ToStrings
+    showWithScala3Enum(tree)
   }
 
 }

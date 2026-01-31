@@ -15,10 +15,11 @@ import scala.jdk.CollectionConverters._
 
 object StandardTraitTree {
 
-  def toScala3EnumDef(schema: Schema): List[Tree] = {
+  def toScala3EnumDef(schema: Schema, maybeBaseTrait: Option[String]): List[Tree] = {
     val enumName = schema.getName
-    val enumCases = schema.getEnumSymbols.asScala.map(_.toString).mkString(", ")
-    val enumSource = s"enum $enumName { case $enumCases }\n"
+    val enumCases = schema.getEnumSymbols.asScala.mkString(", ")
+    val maybeExtendsBase = maybeBaseTrait.fold("")(t => s" extends $t")
+    val enumSource = s"enum $enumName$maybeExtendsBase { case $enumCases }"
     List(Scala3EnumSourceCode(enumSource))
   }
 
